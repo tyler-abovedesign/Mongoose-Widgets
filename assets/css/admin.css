@@ -1,0 +1,103 @@
+/* Mongoose Widgets — Admin Page */
+
+.mw-admin-wrap {
+    max-width: 900px;
+}
+
+.mw-admin-description {
+    color: #646970;
+    margin-bottom: 24px;
+}
+
+/* Card grid */
+.mw-widget-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 20px;
+    margin-bottom: 24px;
+}
+
+.mw-widget-card {
+    background: #fff;
+    border: 1px solid #dcdcde;
+    border-radius: 8px;
+    padding: 20px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.mw-widget-card--active {
+    border-color: #2271b1;
+    box-shadow: 0 0 0 1px #2271b1;
+}
+
+.mw-widget-card__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.mw-widget-card__icon {
+    font-size: 24px;
+    color: #2271b1;
+}
+
+.mw-widget-card__title {
+    margin: 0 0 6px;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.mw-widget-card__desc {
+    margin: 0;
+    color: #646970;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+/* Toggle switch */
+.mw-toggle {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 22px;
+}
+
+.mw-toggle input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.mw-toggle__slider {
+    position: absolute;
+    cursor: pointer;
+    inset: 0;
+    background-color: #ccc;
+    border-radius: 22px;
+    transition: background-color 0.2s;
+}
+
+.mw-toggle__slider::before {
+    content: "";
+    position: absolute;
+    height: 16px;
+    width: 16px;
+    left: 3px;
+    bottom: 3px;
+    background-color: #fff;
+    border-radius: 50%;
+    transition: transform 0.2s;
+}
+
+.mw-toggle input:checked + .mw-toggle__slider {
+    background-color: #2271b1;
+}
+
+.mw-toggle input:checked + .mw-toggle__slider::before {
+    transform: translateX(18px);
+}
+
+.mw-toggle input:focus + .mw-toggle__slider {
+    box-shadow: 0 0 0 2px #2271b1;
+}

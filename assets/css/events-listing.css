@@ -1,0 +1,384 @@
+/* ── Events Listing Widget ─────────────────────────────── */
+
+.mw-el-wrap {
+    width: 100%;
+}
+
+/* ── Filter Buttons ───────────────────────────────────── */
+
+.mw-el-filters {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 32px;
+}
+
+.mw-el-filter-btn {
+    padding: 8px 20px;
+    border: none;
+    border-radius: 24px;
+    background-color: #0d0e23;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.mw-el-filter-btn:hover {
+    opacity: 0.85;
+}
+
+.mw-el-filter-btn--active {
+    background-color: #1eaaf0;
+}
+
+/* ── Body Layout ──────────────────────────────────────── */
+
+.mw-el-body {
+    display: flex;
+    gap: 32px;
+}
+
+/* ── Sidebar ──────────────────────────────────────────── */
+
+.mw-el-sidebar {
+    width: 220px;
+    min-width: 220px;
+    flex-shrink: 0;
+}
+
+.mw-el-sidebar__title {
+    margin: 0 0 16px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.mw-el-months {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.mw-el-months li {
+    margin-bottom: 4px;
+}
+
+.mw-el-month-btn {
+    display: block;
+    width: 100%;
+    padding: 8px 12px;
+    border: none;
+    background: none;
+    color: #aaaaaa;
+    font-size: 14px;
+    text-align: left;
+    cursor: pointer;
+    border-radius: 6px;
+    transition:
+        color 0.2s ease,
+        background-color 0.2s ease;
+}
+
+.mw-el-month-btn:hover {
+    color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.mw-el-month-btn--active {
+    color: #ffffff;
+    font-weight: 600;
+    background-color: rgba(255, 255, 255, 0.08);
+}
+
+.mw-el-months__empty {
+    color: #666;
+    font-size: 14px;
+    padding: 8px 12px;
+}
+
+.mw-el-months__archive {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.mw-el-archive-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    width: 100%;
+    padding: 8px 12px;
+    border: none;
+    background: none;
+    color: #aaaaaa;
+    font-size: 14px;
+    text-align: left;
+    cursor: pointer;
+    border-radius: 6px;
+    transition:
+        color 0.2s ease,
+        background-color 0.2s ease;
+}
+
+.mw-el-archive-btn i {
+    font-size: 14px;
+}
+
+.mw-el-archive-btn:hover {
+    color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.mw-el-archive-btn--active {
+    color: #ff007f;
+    font-weight: 600;
+    background-color: rgba(255, 0, 127, 0.08);
+}
+
+.mw-el-archive-btn--active:hover {
+    color: #ff007f;
+    background-color: rgba(255, 0, 127, 0.12);
+}
+
+/* ── Cards Container ──────────────────────────────────── */
+
+.mw-el-cards {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    min-width: 0;
+}
+
+.mw-el-cards--loading {
+    opacity: 0.5;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+}
+
+/* ── Month Heading ────────────────────────────────────── */
+
+.mw-el-month-heading {
+    margin: 0;
+    padding: 0;
+    font-size: 22px;
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.3;
+}
+
+.mw-el-month-heading:not(:first-child) {
+    margin-top: 12px;
+}
+
+/* ── Event Card ───────────────────────────────────────── */
+
+.mw-el-card {
+    display: flex;
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: #141414;
+    color: #ffffff;
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.mw-el-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+/* ── Card Image ───────────────────────────────────────── */
+
+.mw-el-card__image {
+    position: relative;
+    width: 40%;
+    min-width: 40%;
+    overflow: hidden;
+}
+
+.mw-el-card__image img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.mw-el-card__badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 12px;
+    border-radius: 2px;
+    background-color: rgba(0, 0, 0, 0.45);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #ff007f;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    backdrop-filter: blur(4px);
+}
+
+.mw-el-card__badge i {
+    font-size: 12px;
+    color: #ff007f;
+}
+
+/* ── Card Content ─────────────────────────────────────── */
+
+.mw-el-card__content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 24px;
+    width: 60%;
+}
+
+.mw-el-card__date {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 8px;
+    font-size: 13px;
+    color: #aaaaaa;
+    font-weight: 500;
+}
+
+.mw-el-card__date-icon {
+    color: #ff007f;
+    font-size: 14px;
+}
+
+.mw-el-card__title {
+    margin: 0 0 8px;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: inherit;
+}
+
+.mw-el-card__description {
+    margin: 0 0 20px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #cccccc;
+}
+
+a.mw-el-card {
+    text-decoration: none;
+    color: inherit;
+}
+
+.mw-el-card__divider {
+    height: 1px;
+    background-color: #333333;
+    margin: 32px 0px 16px 0;
+}
+
+.mw-el-card__location {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: #999999;
+}
+
+.mw-el-card__location-icon {
+    color: #ff007f;
+    font-size: 14px;
+}
+
+/* ── No Results ───────────────────────────────────────── */
+
+.mw-el-no-results {
+    padding: 40px 20px;
+    text-align: center;
+    color: #666666;
+    font-size: 16px;
+}
+
+/* ── Responsive: Tablet ───────────────────────────────── */
+
+@media (max-width: 992px) {
+    .mw-el-body {
+        flex-direction: column;
+    }
+
+    .mw-el-sidebar {
+        width: 100% !important;
+        min-width: 0 !important;
+    }
+
+    .mw-el-months {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .mw-el-months li {
+        margin-bottom: 0;
+    }
+
+    .mw-el-month-btn {
+        width: auto;
+        padding: 6px 14px;
+        border-radius: 20px;
+        background-color: rgba(255, 255, 255, 0.05);
+    }
+
+    .mw-el-months__archive {
+        margin-top: 0;
+        padding-top: 0;
+        border-top: none;
+    }
+
+    .mw-el-archive-btn {
+        width: auto;
+        padding: 6px 14px;
+        border-radius: 20px;
+        background-color: rgba(255, 255, 255, 0.05);
+    }
+}
+
+/* ── Responsive: Mobile ───────────────────────────────── */
+
+@media (max-width: 768px) {
+    .mw-el-card {
+        flex-direction: column;
+    }
+
+    .mw-el-card__image {
+        width: 100%;
+        min-width: 100%;
+        aspect-ratio: 16 / 9;
+    }
+
+    .mw-el-card__content {
+        width: 100%;
+        padding: 20px;
+    }
+
+    .mw-el-card__title {
+        font-size: 18px;
+    }
+}
+
+/* ── Accessibility ────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+    .mw-el-card,
+    .mw-el-filter-btn,
+    .mw-el-month-btn,
+    .mw-el-card__link,
+    .mw-el-cards--loading {
+        transition: none;
+    }
+}
