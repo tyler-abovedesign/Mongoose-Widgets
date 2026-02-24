@@ -29,6 +29,5 @@ $mongoose_widgets_updater = PucFactory::buildUpdateChecker(
     'mongoose-widgets'
 );
 $mongoose_widgets_updater->setBranch( 'main' );
-$mongoose_widgets_updater->setAuthentication( defined( 'MONGOOSE_WIDGETS_GITHUB_TOKEN' ) ? MONGOOSE_WIDGETS_GITHUB_TOKEN : '' );
 
 Mongoose_Widgets::instance();
