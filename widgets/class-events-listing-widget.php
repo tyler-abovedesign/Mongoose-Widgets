@@ -195,47 +195,6 @@ class Mongoose_Events_Listing_Widget extends \Elementor\Widget_Base {
         ] );
 
         $this->end_controls_section();
-
-        /*
-         * ── Style Tab — Sidebar ─────────────────────────────────
-         */
-        $this->start_controls_section( 'section_style_sidebar', [
-            'label' => esc_html__( 'Month Sidebar', 'mongoose-widgets' ),
-            'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
-        ] );
-
-        $this->add_control( 'sidebar_width', [
-            'label'      => esc_html__( 'Width', 'mongoose-widgets' ),
-            'type'       => \Elementor\Controls_Manager::SLIDER,
-            'size_units' => [ 'px' ],
-            'range'      => [
-                'px' => [ 'min' => 150, 'max' => 350 ],
-            ],
-            'default'    => [ 'size' => 220, 'unit' => 'px' ],
-            'selectors'  => [
-                '{{WRAPPER}} .mw-el-sidebar' => 'width: {{SIZE}}{{UNIT}}; min-width: {{SIZE}}{{UNIT}};',
-            ],
-        ] );
-
-        $this->add_control( 'sidebar_text_color', [
-            'label'     => esc_html__( 'Text Color', 'mongoose-widgets' ),
-            'type'      => \Elementor\Controls_Manager::COLOR,
-            'default'   => '#aaaaaa',
-            'selectors' => [
-                '{{WRAPPER}} .mw-el-month-btn' => 'color: {{VALUE}};',
-            ],
-        ] );
-
-        $this->add_control( 'sidebar_active_color', [
-            'label'     => esc_html__( 'Active Item Color', 'mongoose-widgets' ),
-            'type'      => \Elementor\Controls_Manager::COLOR,
-            'default'   => '#ffffff',
-            'selectors' => [
-                '{{WRAPPER}} .mw-el-month-btn.mw-el-month-btn--active' => 'color: {{VALUE}};',
-            ],
-        ] );
-
-        $this->end_controls_section();
     }
 
     protected function render() {
@@ -279,9 +238,6 @@ class Mongoose_Events_Listing_Widget extends \Elementor\Widget_Base {
 
         $query = new \WP_Query( $query_args );
 
-        // Build months for sidebar.
-        $months = $this->get_initial_months( $show_past );
-
         // Localize JS data.
         wp_localize_script( 'mongoose-events-listing', 'mongooseEventsListing', [
             'ajaxUrl'  => admin_url( 'admin-ajax.php' ),
@@ -301,34 +257,12 @@ class Mongoose_Events_Listing_Widget extends \Elementor\Widget_Base {
             <?php endif; ?>
 
             <div class="mw-el-body">
-                <div class="mw-el-sidebar">
-                    <h4 class="mw-el-sidebar__title">Months</h4>
-                    <ul class="mw-el-months">
-                        <?php if ( ! empty( $months ) ) : ?>
-                            <?php foreach ( $months as $m ) : ?>
-                                <li><button type="button" class="mw-el-month-btn" data-month="<?php echo esc_attr( $m['value'] ); ?>"><?php echo esc_html( $m['label'] ); ?></button></li>
-                            <?php endforeach; ?>
-                        <?php else : ?>
-                            <li class="mw-el-months__empty">No upcoming months</li>
-                        <?php endif; ?>
-                        <li class="mw-el-months__archive"><button type="button" class="mw-el-archive-btn"><i class="eicon-history"></i> Archive</button></li>
-                    </ul>
-                </div>
-
                 <div class="mw-el-cards">
                     <?php
                     if ( $query->have_posts() ) {
-                        $current_month = '';
                         while ( $query->have_posts() ) {
                             $query->the_post();
                             if ( class_exists( 'Mongoose_Events_AJAX' ) ) {
-                                $date_raw    = get_field( 'event_date', get_the_ID() );
-                                $event_month = $date_raw ? substr( $date_raw, 0, 6 ) : '';
-                                if ( $event_month && $event_month !== $current_month ) {
-                                    $current_month = $event_month;
-                                    $heading_label = date_i18n( 'F Y', strtotime( $date_raw ) );
-                                    echo '<h3 class="mw-el-month-heading">' . esc_html( $heading_label ) . '</h3>';
-                                }
                                 echo Mongoose_Events_AJAX::render_event_card( get_the_ID() );
                             }
                         }
@@ -351,50 +285,4 @@ class Mongoose_Events_Listing_Widget extends \Elementor\Widget_Base {
         <?php
     }
 
-    /**
-     * Get initial months for server-side render.
-     */
-    private function get_initial_months( $show_past ) {
-        $args = [
-            'post_type'      => 'mongoose_event',
-            'posts_per_page' => -1,
-            'meta_key'       => 'event_date',
-            'orderby'        => 'meta_value',
-            'order'          => 'ASC',
-            'fields'         => 'ids',
-            'meta_query'     => [],
-        ];
-
-        if ( ! $show_past ) {
-            $args['meta_query'][] = [
-                'key'     => 'event_date',
-                'value'   => gmdate( 'Ymd' ),
-                'compare' => '>=',
-                'type'    => 'NUMERIC',
-            ];
-        }
-
-        $ids    = get_posts( $args );
-        $months = [];
-        $seen   = [];
-
-        foreach ( $ids as $id ) {
-            $date_raw = get_field( 'event_date', $id );
-            if ( ! $date_raw ) {
-                continue;
-            }
-            $ym = substr( $date_raw, 0, 4 ) . '-' . substr( $date_raw, 4, 2 );
-            if ( isset( $seen[ $ym ] ) ) {
-                continue;
-            }
-            $seen[ $ym ] = true;
-            $timestamp   = strtotime( $date_raw );
-            $months[]    = [
-                'value' => $ym,
-                'label' => date_i18n( 'F Y', $timestamp ),
-            ];
-        }
-
-        return $months;
-    }
 }
