@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Mongoose Widgets
  * Description: A library of custom Elementor widgets that can be individually enabled/disabled from an admin dashboard.
- * Version: 1.1.0
+ * Version: 1.2.0
  * Author: Mongoose
  * Text Domain: mongoose-widgets
  * Requires Plugins: elementor
@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-define( 'MONGOOSE_WIDGETS_VERSION', '1.1.0' );
+define( 'MONGOOSE_WIDGETS_VERSION', '1.2.0' );
 define( 'MONGOOSE_WIDGETS_PATH', plugin_dir_path( __FILE__ ) );
 define( 'MONGOOSE_WIDGETS_URL', plugin_dir_url( __FILE__ ) );
 

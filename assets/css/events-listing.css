@@ -17,22 +17,19 @@
 
 .mw-el-filter-btn {
     padding: 8px 20px;
-    border: none;
+    border: 1px solid transparent;
     border-radius: 24px;
     background-color: #0d0e23;
     color: #ffffff;
     font-size: 14px;
     font-weight: 500;
     cursor: pointer;
-    transition: background-color 0.2s ease;
-}
-
-.mw-el-filter-btn:hover {
-    opacity: 0.85;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
 
 .mw-el-filter-btn--active {
     background-color: #1eaaf0;
+    box-shadow: 0 0 20px 0 rgba(255, 0, 127, 0.40);
 }
 
 /* ── Body Layout ──────────────────────────────────────── */

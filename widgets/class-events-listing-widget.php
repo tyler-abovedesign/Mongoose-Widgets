@@ -74,21 +74,26 @@ class Mongoose_Events_Listing_Widget extends \Elementor\Widget_Base {
             'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
         ] );
 
+        /* ── Default State ─────────────────────────────────────── */
+
+        $this->add_control( 'filter_default_heading', [
+            'label' => esc_html__( 'Default State', 'mongoose-widgets' ),
+            'type'  => \Elementor\Controls_Manager::HEADING,
+        ] );
+
+        $this->start_controls_tabs( 'filter_default_tabs' );
+
+        // Default — Normal.
+        $this->start_controls_tab( 'filter_default_normal', [
+            'label' => esc_html__( 'Normal', 'mongoose-widgets' ),
+        ] );
+
         $this->add_control( 'filter_bg_color', [
-            'label'     => esc_html__( 'Default Background', 'mongoose-widgets' ),
+            'label'     => esc_html__( 'Background Color', 'mongoose-widgets' ),
             'type'      => \Elementor\Controls_Manager::COLOR,
             'default'   => '#0d0e23',
             'selectors' => [
                 '{{WRAPPER}} .mw-el-filter-btn' => 'background-color: {{VALUE}};',
-            ],
-        ] );
-
-        $this->add_control( 'filter_active_bg_color', [
-            'label'     => esc_html__( 'Active Background', 'mongoose-widgets' ),
-            'type'      => \Elementor\Controls_Manager::COLOR,
-            'default'   => '#1eaaf0',
-            'selectors' => [
-                '{{WRAPPER}} .mw-el-filter-btn.mw-el-filter-btn--active' => 'background-color: {{VALUE}};',
             ],
         ] );
 
@@ -99,6 +104,133 @@ class Mongoose_Events_Listing_Widget extends \Elementor\Widget_Base {
             'selectors' => [
                 '{{WRAPPER}} .mw-el-filter-btn' => 'color: {{VALUE}};',
             ],
+        ] );
+
+        $this->add_control( 'filter_border_color', [
+            'label'     => esc_html__( 'Border Color', 'mongoose-widgets' ),
+            'type'      => \Elementor\Controls_Manager::COLOR,
+            'default'   => 'transparent',
+            'selectors' => [
+                '{{WRAPPER}} .mw-el-filter-btn' => 'border-color: {{VALUE}};',
+            ],
+        ] );
+
+        $this->end_controls_tab();
+
+        // Default — Hover.
+        $this->start_controls_tab( 'filter_default_hover', [
+            'label' => esc_html__( 'Hover', 'mongoose-widgets' ),
+        ] );
+
+        $this->add_control( 'filter_hover_bg_color', [
+            'label'     => esc_html__( 'Background Color', 'mongoose-widgets' ),
+            'type'      => \Elementor\Controls_Manager::COLOR,
+            'selectors' => [
+                '{{WRAPPER}} .mw-el-filter-btn:hover' => 'background-color: {{VALUE}};',
+            ],
+        ] );
+
+        $this->add_control( 'filter_hover_text_color', [
+            'label'     => esc_html__( 'Text Color', 'mongoose-widgets' ),
+            'type'      => \Elementor\Controls_Manager::COLOR,
+            'selectors' => [
+                '{{WRAPPER}} .mw-el-filter-btn:hover' => 'color: {{VALUE}};',
+            ],
+        ] );
+
+        $this->add_control( 'filter_hover_border_color', [
+            'label'     => esc_html__( 'Border Color', 'mongoose-widgets' ),
+            'type'      => \Elementor\Controls_Manager::COLOR,
+            'selectors' => [
+                '{{WRAPPER}} .mw-el-filter-btn:hover' => 'border-color: {{VALUE}};',
+            ],
+        ] );
+
+        $this->end_controls_tab();
+        $this->end_controls_tabs();
+
+        /* ── Active State ──────────────────────────────────────── */
+
+        $this->add_control( 'filter_active_heading', [
+            'label'     => esc_html__( 'Active State', 'mongoose-widgets' ),
+            'type'      => \Elementor\Controls_Manager::HEADING,
+            'separator' => 'before',
+        ] );
+
+        $this->start_controls_tabs( 'filter_active_tabs' );
+
+        // Active — Normal.
+        $this->start_controls_tab( 'filter_active_normal', [
+            'label' => esc_html__( 'Normal', 'mongoose-widgets' ),
+        ] );
+
+        $this->add_control( 'filter_active_bg_color', [
+            'label'     => esc_html__( 'Background Color', 'mongoose-widgets' ),
+            'type'      => \Elementor\Controls_Manager::COLOR,
+            'default'   => '#1eaaf0',
+            'selectors' => [
+                '{{WRAPPER}} .mw-el-filter-btn.mw-el-filter-btn--active' => 'background-color: {{VALUE}};',
+            ],
+        ] );
+
+        $this->add_control( 'filter_active_text_color', [
+            'label'     => esc_html__( 'Text Color', 'mongoose-widgets' ),
+            'type'      => \Elementor\Controls_Manager::COLOR,
+            'default'   => '#ffffff',
+            'selectors' => [
+                '{{WRAPPER}} .mw-el-filter-btn.mw-el-filter-btn--active' => 'color: {{VALUE}};',
+            ],
+        ] );
+
+        $this->add_control( 'filter_active_border_color', [
+            'label'     => esc_html__( 'Border Color', 'mongoose-widgets' ),
+            'type'      => \Elementor\Controls_Manager::COLOR,
+            'default'   => 'transparent',
+            'selectors' => [
+                '{{WRAPPER}} .mw-el-filter-btn.mw-el-filter-btn--active' => 'border-color: {{VALUE}};',
+            ],
+        ] );
+
+        $this->end_controls_tab();
+
+        // Active — Hover.
+        $this->start_controls_tab( 'filter_active_hover', [
+            'label' => esc_html__( 'Hover', 'mongoose-widgets' ),
+        ] );
+
+        $this->add_control( 'filter_active_hover_bg_color', [
+            'label'     => esc_html__( 'Background Color', 'mongoose-widgets' ),
+            'type'      => \Elementor\Controls_Manager::COLOR,
+            'selectors' => [
+                '{{WRAPPER}} .mw-el-filter-btn.mw-el-filter-btn--active:hover' => 'background-color: {{VALUE}};',
+            ],
+        ] );
+
+        $this->add_control( 'filter_active_hover_text_color', [
+            'label'     => esc_html__( 'Text Color', 'mongoose-widgets' ),
+            'type'      => \Elementor\Controls_Manager::COLOR,
+            'selectors' => [
+                '{{WRAPPER}} .mw-el-filter-btn.mw-el-filter-btn--active:hover' => 'color: {{VALUE}};',
+            ],
+        ] );
+
+        $this->add_control( 'filter_active_hover_border_color', [
+            'label'     => esc_html__( 'Border Color', 'mongoose-widgets' ),
+            'type'      => \Elementor\Controls_Manager::COLOR,
+            'selectors' => [
+                '{{WRAPPER}} .mw-el-filter-btn.mw-el-filter-btn--active:hover' => 'border-color: {{VALUE}};',
+            ],
+        ] );
+
+        $this->end_controls_tab();
+        $this->end_controls_tabs();
+
+        /* ── Shared ────────────────────────────────────────────── */
+
+        $this->add_control( 'filter_shared_heading', [
+            'label'     => esc_html__( 'General', 'mongoose-widgets' ),
+            'type'      => \Elementor\Controls_Manager::HEADING,
+            'separator' => 'before',
         ] );
 
         $this->add_control( 'filter_border_radius', [
