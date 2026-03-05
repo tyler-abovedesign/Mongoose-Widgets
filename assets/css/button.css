@@ -1,0 +1,42 @@
+.mw-btn {
+    display: inline-flex;
+    height: 53px;
+    padding: 16px 36px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    cursor: pointer;
+    font: inherit;
+    color: inherit;
+    box-sizing: border-box;
+    transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.mw-btn--blue-glow {
+    border-radius: 3px;
+    border: 1px solid rgba(29, 170, 240, 0.33);
+    background: rgba(29, 170, 240, 0.07);
+    background-blend-mode: plus-lighter;
+    box-shadow:
+        -14.559px -14.29px 48px -12px rgba(29, 170, 240, 0.15),
+        -2.427px -2.382px 12px -8px rgba(29, 170, 240, 0.07),
+        2.475px 2.429px 8.16px 0 rgba(29, 170, 240, 0.21) inset,
+        1.262px 1.238px 4.08px 0 rgba(248, 33, 95, 0.19) inset;
+    backdrop-filter: blur(2.72px);
+    color: #FFF;
+    font-family: "Archivo SemiExpanded", sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    text-transform: uppercase;
+}
+
+.mw-btn--blue-glow:hover {
+    border-radius: 3px;
+    border: 1px solid rgba(27, 70, 210, 0.79);
+    background: #1DAAF0;
+    background-blend-mode: plus-lighter;
+    box-shadow: none;
+}

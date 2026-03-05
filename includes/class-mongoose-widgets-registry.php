@@ -34,6 +34,17 @@ class Mongoose_Widgets_Registry {
                     'src'    => MONGOOSE_WIDGETS_URL . 'assets/js/video-on-hover.js',
                 ],
             ],
+            'button' => [
+                'label'       => 'Button',
+                'description' => 'A styled button with configurable text and icon.',
+                'icon'        => 'eicon-button',
+                'file'        => MONGOOSE_WIDGETS_PATH . 'widgets/class-button-widget.php',
+                'class'       => 'Mongoose_Button_Widget',
+                'css'         => [
+                    'handle' => 'mongoose-button',
+                    'src'    => MONGOOSE_WIDGETS_URL . 'assets/css/button.css',
+                ],
+            ],
             'events-listing' => [
                 'label'       => 'Events Listing',
                 'description' => 'Displays a filterable list of events with type and month filters.',
