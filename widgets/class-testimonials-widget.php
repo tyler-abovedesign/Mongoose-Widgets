@@ -1,6 +1,8 @@
 <?php
 /**
  * Testimonials — Elementor widget.
+ *
+ * Displays testimonials from the mongoose_testimonial CPT.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -35,62 +37,39 @@ class Mongoose_Testimonials_Widget extends \Elementor\Widget_Base {
 
     protected function register_controls() {
 
-        $this->start_controls_section( 'section_testimonials', [
-            'label' => esc_html__( 'Testimonials', 'mongoose-widgets' ),
+        $this->start_controls_section( 'section_query', [
+            'label' => esc_html__( 'Query', 'mongoose-widgets' ),
             'tab'   => \Elementor\Controls_Manager::TAB_CONTENT,
         ] );
 
-        $repeater = new \Elementor\Repeater();
-
-        $repeater->add_control( 'testimonial_text', [
-            'label'   => esc_html__( 'Testimonial', 'mongoose-widgets' ),
-            'type'    => \Elementor\Controls_Manager::TEXTAREA,
-            'default' => esc_html__( 'Enter testimonial text here.', 'mongoose-widgets' ),
-            'rows'    => 6,
+        $this->add_control( 'posts_per_page', [
+            'label'   => esc_html__( 'Number of Testimonials', 'mongoose-widgets' ),
+            'type'    => \Elementor\Controls_Manager::NUMBER,
+            'default' => 3,
+            'min'     => 1,
+            'max'     => 12,
         ] );
 
-        $repeater->add_control( 'avatar', [
-            'label'   => esc_html__( 'Avatar', 'mongoose-widgets' ),
-            'type'    => \Elementor\Controls_Manager::MEDIA,
-            'default' => [
-                'url' => \Elementor\Utils::get_placeholder_image_src(),
+        $this->add_control( 'orderby', [
+            'label'   => esc_html__( 'Order By', 'mongoose-widgets' ),
+            'type'    => \Elementor\Controls_Manager::SELECT,
+            'default' => 'date',
+            'options' => [
+                'date'       => esc_html__( 'Date', 'mongoose-widgets' ),
+                'title'      => esc_html__( 'Title', 'mongoose-widgets' ),
+                'menu_order' => esc_html__( 'Menu Order', 'mongoose-widgets' ),
+                'rand'       => esc_html__( 'Random', 'mongoose-widgets' ),
             ],
         ] );
 
-        $repeater->add_control( 'name', [
-            'label'   => esc_html__( 'Name', 'mongoose-widgets' ),
-            'type'    => \Elementor\Controls_Manager::TEXT,
-            'default' => esc_html__( 'John Doe', 'mongoose-widgets' ),
-        ] );
-
-        $repeater->add_control( 'title', [
-            'label'   => esc_html__( 'Title', 'mongoose-widgets' ),
-            'type'    => \Elementor\Controls_Manager::TEXT,
-            'default' => esc_html__( 'Job Title | Company', 'mongoose-widgets' ),
-        ] );
-
-        $this->add_control( 'testimonials', [
-            'label'       => esc_html__( 'Testimonial Items', 'mongoose-widgets' ),
-            'type'        => \Elementor\Controls_Manager::REPEATER,
-            'fields'      => $repeater->get_controls(),
-            'default'     => [
-                [
-                    'testimonial_text' => esc_html__( 'This is an amazing service. Highly recommended!', 'mongoose-widgets' ),
-                    'name'             => esc_html__( 'Jane Smith', 'mongoose-widgets' ),
-                    'title'            => esc_html__( 'Marketing Director | Acme Corp', 'mongoose-widgets' ),
-                ],
-                [
-                    'testimonial_text' => esc_html__( 'Working with this team has been a fantastic experience.', 'mongoose-widgets' ),
-                    'name'             => esc_html__( 'John Doe', 'mongoose-widgets' ),
-                    'title'            => esc_html__( 'CEO | Tech Startup', 'mongoose-widgets' ),
-                ],
-                [
-                    'testimonial_text' => esc_html__( 'Professional, creative, and always delivering on time.', 'mongoose-widgets' ),
-                    'name'             => esc_html__( 'Sarah Johnson', 'mongoose-widgets' ),
-                    'title'            => esc_html__( 'Product Manager | Global Inc', 'mongoose-widgets' ),
-                ],
+        $this->add_control( 'order', [
+            'label'   => esc_html__( 'Order', 'mongoose-widgets' ),
+            'type'    => \Elementor\Controls_Manager::SELECT,
+            'default' => 'DESC',
+            'options' => [
+                'ASC'  => esc_html__( 'Ascending', 'mongoose-widgets' ),
+                'DESC' => esc_html__( 'Descending', 'mongoose-widgets' ),
             ],
-            'title_field' => '{{{ name }}}',
         ] );
 
         $this->end_controls_section();
@@ -99,53 +78,48 @@ class Mongoose_Testimonials_Widget extends \Elementor\Widget_Base {
     protected function render() {
         $settings = $this->get_settings_for_display();
 
-        if ( empty( $settings['testimonials'] ) ) {
+        $query = new \WP_Query( [
+            'post_type'      => 'mongoose_testimonial',
+            'posts_per_page' => $settings['posts_per_page'],
+            'orderby'        => $settings['orderby'],
+            'order'          => $settings['order'],
+            'post_status'    => 'publish',
+        ] );
+
+        if ( ! $query->have_posts() ) {
+            if ( \Elementor\Plugin::$instance->editor->is_edit_mode() ) {
+                echo '<p style="color:#999;text-align:center;">' . esc_html__( 'No testimonials found. Add testimonials in the Testimonials post type.', 'mongoose-widgets' ) . '</p>';
+            }
             return;
         }
         ?>
         <div class="mw-testimonials">
-            <?php foreach ( $settings['testimonials'] as $index => $item ) : ?>
+            <?php while ( $query->have_posts() ) : $query->the_post(); ?>
+                <?php
+                $name       = get_the_title();
+                $text       = get_field( 'testimonial_text' );
+                $avatar     = get_field( 'testimonial_avatar' );
+                $person_title = get_field( 'testimonial_person_title' );
+                ?>
                 <div class="mw-testimonials__card">
                     <div class="mw-testimonials__text">
-                        <?php echo esc_html( $item['testimonial_text'] ); ?>
+                        <?php echo esc_html( $text ); ?>
                     </div>
                     <div class="mw-testimonials__author">
-                        <?php if ( ! empty( $item['avatar']['url'] ) ) : ?>
-                            <img class="mw-testimonials__avatar" src="<?php echo esc_url( $item['avatar']['url'] ); ?>" alt="<?php echo esc_attr( $item['name'] ); ?>">
+                        <?php if ( ! empty( $avatar ) ) : ?>
+                            <img class="mw-testimonials__avatar" src="<?php echo esc_url( $avatar ); ?>" alt="<?php echo esc_attr( $name ); ?>">
                         <?php endif; ?>
                         <div class="mw-testimonials__info">
-                            <div class="mw-testimonials__name"><?php echo esc_html( $item['name'] ); ?></div>
-                            <div class="mw-testimonials__title"><?php echo esc_html( $item['title'] ); ?></div>
+                            <div class="mw-testimonials__name"><?php echo esc_html( $name ); ?></div>
+                            <?php if ( ! empty( $person_title ) ) : ?>
+                                <div class="mw-testimonials__title"><?php echo esc_html( $person_title ); ?></div>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
-            <?php endforeach; ?>
+            <?php endwhile; ?>
+            <?php wp_reset_postdata(); ?>
         </div>
-        <?php
-    }
-
-    protected function content_template() {
-        ?>
-        <# if ( settings.testimonials.length ) { #>
-        <div class="mw-testimonials">
-            <# _.each( settings.testimonials, function( item, index ) { #>
-                <div class="mw-testimonials__card">
-                    <div class="mw-testimonials__text">
-                        {{{ item.testimonial_text }}}
-                    </div>
-                    <div class="mw-testimonials__author">
-                        <# if ( item.avatar && item.avatar.url ) { #>
-                            <img class="mw-testimonials__avatar" src="{{ item.avatar.url }}" alt="{{ item.name }}">
-                        <# } #>
-                        <div class="mw-testimonials__info">
-                            <div class="mw-testimonials__name">{{{ item.name }}}</div>
-                            <div class="mw-testimonials__title">{{{ item.title }}}</div>
-                        </div>
-                    </div>
-                </div>
-            <# }); #>
-        </div>
-        <# } #>
         <?php
     }
 }
