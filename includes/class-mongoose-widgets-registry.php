@@ -45,6 +45,17 @@ class Mongoose_Widgets_Registry {
                     'src'    => MONGOOSE_WIDGETS_URL . 'assets/css/button.css',
                 ],
             ],
+            'testimonials' => [
+                'label'       => 'Testimonials',
+                'description' => 'Displays testimonial cards with quote, avatar, name, and title.',
+                'icon'        => 'eicon-testimonial',
+                'file'        => MONGOOSE_WIDGETS_PATH . 'widgets/class-testimonials-widget.php',
+                'class'       => 'Mongoose_Testimonials_Widget',
+                'css'         => [
+                    'handle' => 'mongoose-testimonials',
+                    'src'    => MONGOOSE_WIDGETS_URL . 'assets/css/testimonials.css',
+                ],
+            ],
             'events-listing' => [
                 'label'       => 'Events Listing',
                 'description' => 'Displays a filterable list of events with type and month filters.',
