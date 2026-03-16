@@ -56,6 +56,21 @@ class Mongoose_Widgets_Registry {
                     'src'    => MONGOOSE_WIDGETS_URL . 'assets/css/testimonials.css',
                 ],
             ],
+            'faq' => [
+                'label'       => 'FAQ',
+                'description' => 'Displays FAQ items in a 3-column accordion grid with numbered headings.',
+                'icon'        => 'eicon-accordion',
+                'file'        => MONGOOSE_WIDGETS_PATH . 'widgets/class-faq-widget.php',
+                'class'       => 'Mongoose_FAQ_Widget',
+                'css'         => [
+                    'handle' => 'mongoose-faq',
+                    'src'    => MONGOOSE_WIDGETS_URL . 'assets/css/faq.css',
+                ],
+                'js'          => [
+                    'handle' => 'mongoose-faq',
+                    'src'    => MONGOOSE_WIDGETS_URL . 'assets/js/faq.js',
+                ],
+            ],
             'events-listing' => [
                 'label'       => 'Events Listing',
                 'description' => 'Displays a filterable list of events with type and month filters.',

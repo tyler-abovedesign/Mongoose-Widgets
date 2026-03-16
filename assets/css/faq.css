@@ -1,0 +1,111 @@
+.mw-faq {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+.mw-faq__item {
+    align-self: start;
+}
+
+.mw-faq__header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+    text-align: left;
+    color: #ffffff;
+}
+
+.mw-faq__number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 56px;
+    height: 56px;
+    border-radius: 10px;
+    border: 1px solid #2A1C68;
+    background: transparent;
+    font-size: 28px;
+    font-weight: 300;
+    color: #ffffff;
+    flex-shrink: 0;
+    transition: border-color 0.3s ease, background 0.3s ease;
+}
+
+.mw-faq__item.is-open .mw-faq__number {
+    border-radius: 10px;
+    border: 1px solid rgba(118, 105, 218, 0.24);
+    background: radial-gradient(77.85% 77.85% at 50% 99.76%, rgba(248, 33, 95, 0.20) 0%, rgba(248, 33, 95, 0.00) 100%), rgba(6, 12, 40, 0.14);
+}
+
+.mw-faq__question {
+    flex: 1;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.4;
+    color: #ffffff;
+}
+
+.mw-faq__chevron {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: #ffffff;
+    transition: transform 0.3s ease;
+}
+
+.mw-faq__item.is-open .mw-faq__chevron {
+    transform: rotate(180deg);
+    color: #F8215F;
+}
+
+.mw-faq__answer {
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    max-height: 0;
+}
+
+.mw-faq__answer[hidden] {
+    display: block;
+    max-height: 0;
+}
+
+.mw-faq__answer.is-visible {
+    max-height: 500px;
+}
+
+.mw-faq__answer-inner {
+    padding: 16px 0 8px 72px;
+    font-size: 14px;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+@media (max-width: 1024px) {
+    .mw-faq {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 767px) {
+    .mw-faq {
+        grid-template-columns: 1fr;
+    }
+
+    .mw-faq__number {
+        min-width: 48px;
+        height: 48px;
+        font-size: 24px;
+    }
+
+    .mw-faq__answer-inner {
+        padding-left: 64px;
+    }
+}
