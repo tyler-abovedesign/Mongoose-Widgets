@@ -8,7 +8,6 @@
 .mw-faq__item {
     align-self: start;
     min-width: 0;
-    overflow: hidden;
 }
 
 .mw-faq__header {
@@ -16,6 +15,7 @@
     align-items: center;
     gap: 16px;
     width: 100%;
+    min-width: 0;
     padding: 0;
     margin: 0;
     border: none;
@@ -25,6 +25,7 @@
     color: #ffffff;
     -webkit-appearance: none;
     appearance: none;
+    white-space: normal;
 }
 
 .mw-faq__header:hover,
@@ -67,6 +68,7 @@
     font-weight: 600;
     line-height: 1.4;
     color: #ffffff;
+    white-space: normal;
     overflow-wrap: break-word;
     word-wrap: break-word;
 }
