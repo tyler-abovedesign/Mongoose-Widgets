@@ -1,11 +1,14 @@
 .mw-faq {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 16px;
+    width: 100%;
 }
 
 .mw-faq__item {
     align-self: start;
+    min-width: 0;
+    overflow: hidden;
 }
 
 .mw-faq__header {
@@ -59,10 +62,13 @@
 
 .mw-faq__question {
     flex: 1;
+    min-width: 0;
     font-size: 16px;
     font-weight: 600;
     line-height: 1.4;
     color: #ffffff;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
 }
 
 .mw-faq__chevron {
