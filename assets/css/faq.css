@@ -58,7 +58,7 @@
 .mw-faq__item.is-open .mw-faq__number {
     border-radius: 10px;
     border: 1px solid rgba(118, 105, 218, 0.24);
-    background: radial-gradient(77.85% 77.85% at 50% 99.76%, rgba(248, 33, 95, 0.20) 0%, rgba(248, 33, 95, 0.00) 100%), rgba(6, 12, 40, 0.14);
+    background: radial-gradient(77.85% 77.85% at 50% 0.24%, rgba(248, 33, 95, 0.20) 0%, rgba(248, 33, 95, 0.00) 100%), rgba(6, 12, 40, 0.14);
 }
 
 .mw-faq__question {
