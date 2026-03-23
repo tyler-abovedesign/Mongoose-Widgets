@@ -1,10 +1,51 @@
 ( function () {
     'use strict';
 
+    var reducedMotion = window.matchMedia( '(prefers-reduced-motion: reduce)' ).matches;
+
+    /**
+     * Show the wrapper: remove display:none, force a reflow so the browser
+     * registers the starting opacity, then add the visible class to trigger
+     * the CSS transition.
+     *
+     * @param {Element} wrap
+     */
+    function showWrap( wrap ) {
+        clearTimeout( wrap._mwChHideTimer );
+        wrap.style.display = '';
+        // Force reflow so the opacity transition fires from 0 → 1.
+        // eslint-disable-next-line no-unused-expressions
+        wrap.offsetHeight;
+        wrap.classList.add( 'mw-ch-visible' );
+    }
+
+    /**
+     * Hide the wrapper: remove the visible class so opacity fades to 0, then
+     * set display:none once the transition finishes (eliminating layout space).
+     * Falls back to immediate hide when reduced-motion is preferred.
+     *
+     * @param {Element} wrap
+     */
+    function hideWrap( wrap ) {
+        wrap.classList.remove( 'mw-ch-visible' );
+
+        if ( reducedMotion ) {
+            wrap.style.display = 'none';
+            return;
+        }
+
+        // Wait for the opacity transition to finish before collapsing.
+        wrap._mwChHideTimer = setTimeout( function () {
+            if ( ! wrap.classList.contains( 'mw-ch-visible' ) ) {
+                wrap.style.display = 'none';
+            }
+        }, 350 ); // slightly longer than the 300 ms CSS duration
+    }
+
     /**
      * Wire up a single .mw-ch-wrapper element.
-     * Reads data-trigger to find the hover target. If no selector is set
-     * the widget stays permanently visible (no JS interaction needed).
+     * Reads data-trigger to find the hover target. If no selector is set the
+     * widget is always visible and no JS interaction is needed.
      *
      * @param {Element} wrap
      */
@@ -14,7 +55,7 @@
 
         var selector = ( wrap.dataset.trigger || '' ).trim();
 
-        // No selector → always visible; remove the hidden state and bail.
+        // No selector → always visible; nothing to set up.
         if ( ! selector ) {
             wrap.classList.add( 'mw-ch-visible' );
             return;
@@ -23,30 +64,28 @@
         var trigger = document.querySelector( selector );
         if ( ! trigger ) return;
 
-        // Show when pointer enters the trigger element.
+        // Start fully hidden (no layout space consumed).
+        wrap.style.display = 'none';
+
         trigger.addEventListener( 'mouseenter', function () {
-            wrap.classList.add( 'mw-ch-visible' );
+            showWrap( wrap );
         } );
 
-        // Hide when pointer leaves both the trigger and the widget itself.
-        // We use a short delay so the user can move the cursor from the
-        // trigger onto the widget without it disappearing.
-        var hideTimer;
-
+        // Small grace period so the cursor can travel from the trigger onto
+        // the widget without it collapsing in between.
         function scheduleHide() {
-            hideTimer = setTimeout( function () {
-                wrap.classList.remove( 'mw-ch-visible' );
+            clearTimeout( wrap._mwChHideTimer );
+            wrap._mwChHideTimer = setTimeout( function () {
+                hideWrap( wrap );
             }, 80 );
-        }
-
-        function cancelHide() {
-            clearTimeout( hideTimer );
         }
 
         trigger.addEventListener( 'mouseleave', scheduleHide );
 
-        // Keep widget visible while the cursor is over it.
-        wrap.addEventListener( 'mouseenter', cancelHide );
+        // Keep visible while cursor is over the widget itself.
+        wrap.addEventListener( 'mouseenter', function () {
+            clearTimeout( wrap._mwChHideTimer );
+        } );
         wrap.addEventListener( 'mouseleave', scheduleHide );
     }
 

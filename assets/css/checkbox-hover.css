@@ -4,25 +4,26 @@
 
 /* ── Wrapper (hidden until trigger hovered) ──────────────────────────────── */
 
+/* display:none is applied by JS so no layout space is consumed when hidden.
+   The opacity transition runs between display:none being removed and the
+   visible class being added (forced via a reflow in JS). */
 .mw-ch-wrapper {
     opacity: 0;
-    visibility: hidden;
     pointer-events: none;
-    transition-property: opacity, visibility;
+    transition-property: opacity;
     transition-duration: 300ms;
     transition-timing-function: ease;
 }
 
 .mw-ch-wrapper.mw-ch-visible {
     opacity: 1;
-    visibility: visible;
     pointer-events: auto;
 }
 
 /* Always show inside the Elementor editor so authors can style it */
 .elementor-editor-active .mw-ch-wrapper {
+    display: block !important;
     opacity: 1;
-    visibility: visible;
     pointer-events: auto;
 }
 
