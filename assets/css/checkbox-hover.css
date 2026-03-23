@@ -1,0 +1,101 @@
+/* ==========================================================================
+   Mongoose Checkbox Hover Widget
+   ========================================================================== */
+
+/* ── Wrapper (hidden until trigger hovered) ──────────────────────────────── */
+
+.mw-ch-wrapper {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition-property: opacity, visibility;
+    transition-duration: 300ms;
+    transition-timing-function: ease;
+}
+
+.mw-ch-wrapper.mw-ch-visible {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+/* Always show inside the Elementor editor so authors can style it */
+.elementor-editor-active .mw-ch-wrapper {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+/* ── Single container layout ─────────────────────────────────────────────── */
+
+.mw-ch-layout-single .mw-ch-container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px 32px;
+    padding: 24px 32px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    border-style: solid;
+}
+
+.mw-ch-layout-single .mw-ch-entry {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* ── Stacked containers layout ───────────────────────────────────────────── */
+
+.mw-ch-layout-stacked .mw-ch-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.mw-ch-layout-stacked .mw-ch-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    padding: 20px 24px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 10px;
+    border-style: solid;
+}
+
+/* ── Icon ────────────────────────────────────────────────────────────────── */
+
+.mw-ch-icon {
+    flex-shrink: 0;
+    font-size: 18px;
+    color: #ff2d5b;
+    line-height: 1.5;
+}
+
+/* ── Text block (stacked) ────────────────────────────────────────────────── */
+
+.mw-ch-body {
+    margin: 0;
+    line-height: 1.6;
+}
+
+.mw-ch-label {
+    font-weight: 600;
+}
+
+/* In stacked layout the label sits inline before the description */
+.mw-ch-layout-stacked .mw-ch-label::after {
+    content: ' ';
+}
+
+.mw-ch-description {
+    line-height: 1.6;
+}
+
+/* ── Reduced-motion ──────────────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+    .mw-ch-wrapper {
+        transition: none;
+    }
+}

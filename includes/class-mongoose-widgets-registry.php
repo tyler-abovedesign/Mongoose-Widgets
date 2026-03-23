@@ -86,6 +86,21 @@ class Mongoose_Widgets_Registry {
                     'src'    => MONGOOSE_WIDGETS_URL . 'assets/js/events-listing.js',
                 ],
             ],
+            'checkbox-hover' => [
+                'label'       => 'Checkbox Hover',
+                'description' => 'Shows a bordered list of checkbox items revealed on hover of a chosen selector. Supports a single shared container or individual stacked containers.',
+                'icon'        => 'eicon-checkbox',
+                'file'        => MONGOOSE_WIDGETS_PATH . 'widgets/class-checkbox-hover-widget.php',
+                'class'       => 'Mongoose_Checkbox_Hover_Widget',
+                'css'         => [
+                    'handle' => 'mongoose-checkbox-hover',
+                    'src'    => MONGOOSE_WIDGETS_URL . 'assets/css/checkbox-hover.css',
+                ],
+                'js'          => [
+                    'handle' => 'mongoose-checkbox-hover',
+                    'src'    => MONGOOSE_WIDGETS_URL . 'assets/js/checkbox-hover.js',
+                ],
+            ],
         ];
     }
 }
