@@ -4,48 +4,45 @@
     var reducedMotion = window.matchMedia( '(prefers-reduced-motion: reduce)' ).matches;
 
     /**
-     * Show the wrapper: remove display:none, force a reflow so the browser
-     * registers the starting opacity, then add the visible class to trigger
-     * the CSS transition.
+     * Show the widget. Removes display:none from the Elementor container so
+     * no layout space is consumed, then fades the inner wrapper in.
      *
-     * @param {Element} wrap
+     * @param {Element} wrap       .mw-ch-wrapper
+     * @param {Element} outerEl   nearest .elementor-widget ancestor (or wrap)
      */
-    function showWrap( wrap ) {
+    function showWrap( wrap, outerEl ) {
         clearTimeout( wrap._mwChHideTimer );
-        wrap.style.display = '';
-        // Force reflow so the opacity transition fires from 0 → 1.
+        outerEl.style.display = '';
+        // Force reflow so the browser registers opacity:0 before transitioning.
         // eslint-disable-next-line no-unused-expressions
         wrap.offsetHeight;
         wrap.classList.add( 'mw-ch-visible' );
     }
 
     /**
-     * Hide the wrapper: remove the visible class so opacity fades to 0, then
-     * set display:none once the transition finishes (eliminating layout space).
-     * Falls back to immediate hide when reduced-motion is preferred.
+     * Hide the widget. Fades the inner wrapper out, then collapses the
+     * Elementor container with display:none once the transition ends.
      *
      * @param {Element} wrap
+     * @param {Element} outerEl
      */
-    function hideWrap( wrap ) {
+    function hideWrap( wrap, outerEl ) {
         wrap.classList.remove( 'mw-ch-visible' );
 
         if ( reducedMotion ) {
-            wrap.style.display = 'none';
+            outerEl.style.display = 'none';
             return;
         }
 
-        // Wait for the opacity transition to finish before collapsing.
         wrap._mwChHideTimer = setTimeout( function () {
             if ( ! wrap.classList.contains( 'mw-ch-visible' ) ) {
-                wrap.style.display = 'none';
+                outerEl.style.display = 'none';
             }
         }, 350 ); // slightly longer than the 300 ms CSS duration
     }
 
     /**
      * Wire up a single .mw-ch-wrapper element.
-     * Reads data-trigger to find the hover target. If no selector is set the
-     * widget is always visible and no JS interaction is needed.
      *
      * @param {Element} wrap
      */
@@ -64,11 +61,15 @@
         var trigger = document.querySelector( selector );
         if ( ! trigger ) return;
 
-        // Start fully hidden (no layout space consumed).
-        wrap.style.display = 'none';
+        // Target the nearest Elementor widget container so its padding/margin
+        // is also removed from the layout when hidden.
+        var outerEl = wrap.closest( '.elementor-widget' ) || wrap;
+
+        // Start fully hidden.
+        outerEl.style.display = 'none';
 
         trigger.addEventListener( 'mouseenter', function () {
-            showWrap( wrap );
+            showWrap( wrap, outerEl );
         } );
 
         // Small grace period so the cursor can travel from the trigger onto
@@ -76,13 +77,12 @@
         function scheduleHide() {
             clearTimeout( wrap._mwChHideTimer );
             wrap._mwChHideTimer = setTimeout( function () {
-                hideWrap( wrap );
+                hideWrap( wrap, outerEl );
             }, 80 );
         }
 
         trigger.addEventListener( 'mouseleave', scheduleHide );
 
-        // Keep visible while cursor is over the widget itself.
         wrap.addEventListener( 'mouseenter', function () {
             clearTimeout( wrap._mwChHideTimer );
         } );
@@ -94,14 +94,12 @@
         document.querySelectorAll( '.mw-ch-wrapper' ).forEach( initWidget );
     }
 
-    // Standard DOM-ready initialisation.
     if ( document.readyState === 'loading' ) {
         document.addEventListener( 'DOMContentLoaded', initAll );
     } else {
         initAll();
     }
 
-    // Elementor editor / frontend preview integration.
     if ( window.elementorFrontend ) {
         window.elementorFrontend.hooks.addAction(
             'frontend/element_ready/mongoose-checkbox-hover.default',
