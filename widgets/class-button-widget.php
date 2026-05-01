@@ -56,7 +56,7 @@ class Mongoose_Button_Widget extends \Elementor\Widget_Base {
             'type'  => \Elementor\Controls_Manager::ICONS,
         ] );
 
-        $this->add_control( 'button_icon_size', [
+        $this->add_responsive_control( 'button_icon_size', [
             'label'      => esc_html__( 'Icon Size', 'mongoose-widgets' ),
             'type'       => \Elementor\Controls_Manager::SLIDER,
             'size_units' => [ 'px' ],
@@ -99,6 +99,20 @@ class Mongoose_Button_Widget extends \Elementor\Widget_Base {
             'options' => [
                 'blue-glow' => esc_html__( 'Blue Glow', 'mongoose-widgets' ),
             ],
+        ] );
+
+        $this->end_controls_section();
+
+        // ── Style – Text ─────────────────────────────────────────────────────
+
+        $this->start_controls_section( 'section_style_text', [
+            'label' => esc_html__( 'Text', 'mongoose-widgets' ),
+            'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
+        ] );
+
+        $this->add_group_control( \Elementor\Group_Control_Typography::get_type(), [
+            'name'     => 'button_typography',
+            'selector' => '{{WRAPPER}} .mw-btn .mw-btn__text',
         ] );
 
         $this->end_controls_section();
